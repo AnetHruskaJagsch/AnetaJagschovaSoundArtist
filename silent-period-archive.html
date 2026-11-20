@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aneta Jagschová — Silent Period Archive</title>
+  <link rel="alternate" hreflang="cs" href="cs/silent-period-archive.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* Black like the main page, with fine forest-green dots in the background. */
+    :root {
+      --bg: #000000;
+      --green: #1f3d2b;
+      --glow: rgba(31, 61, 43, 0.7);
+      --dot: rgba(31, 61, 43, 0.55);
+      --line: rgba(31, 61, 43, 0.7);
+      --pad: clamp(16px, 6vw, 96px);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { overflow-x: hidden; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: clamp(48px, 8vw, 96px);
+      padding: var(--pad);
+      padding-top: max(var(--pad), 64px);
+      background-color: var(--bg);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1.6px);
+      background-size: 14px 14px;
+      color: var(--green);
+      font-family: "IBM Plex Mono", "JetBrains Mono", "Space Mono", ui-monospace, Menlo, monospace;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.7;
+      text-shadow: 0 0 8px var(--glow);
+    }
+    ::selection { background: var(--green); color: var(--bg); }
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid var(--green); outline-offset: 6px; }
+
+    /* Language switch: cz / en around a tiny waveform. */
+    .jazyk {
+      position: absolute;
+      top: max(18px, calc(var(--pad) / 3));
+      right: var(--pad);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6em;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      text-decoration: none;
+    }
+    .jazyk .jiny { opacity: 0.55; transition: opacity 0.25s ease; }
+    .jazyk:hover .jiny, .jazyk:focus-visible .jiny { opacity: 1; }
+    .vlnky { display: inline-flex; align-items: center; gap: 3px; height: 22px; filter: drop-shadow(0 0 3px var(--glow)); }
+    .vlnky i { display: block; width: 3px; border-radius: 2px; background: currentColor; }
+    .vlnky i:nth-child(1) { height: 6px; }
+    .vlnky i:nth-child(2) { height: 14px; }
+    .vlnky i:nth-child(3) { height: 22px; }
+    .vlnky i:nth-child(4) { height: 11px; }
+    .vlnky i:nth-child(5) { height: 18px; }
+    .vlnky i:nth-child(6) { height: 8px; }
+    .vlnky i:nth-child(7) { height: 4px; }
+    .jazyk:hover .vlnky i, .jazyk:focus-visible .vlnky i { animation: eq 0.8s ease-in-out infinite; }
+    .vlnky i:nth-child(2n) { animation-delay: -0.4s; }
+    .vlnky i:nth-child(3n) { animation-delay: -0.2s; }
+    @keyframes eq { 50% { transform: scaleY(0.3); } }
+
+    .jmeno {
+      font-size: clamp(2.2rem, 7vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-align: right;
+      text-decoration: none;
+      text-shadow: 0 0 12px var(--glow);
+    }
+    .jmeno span { display: block; }
+    .jmeno small {
+      display: block;
+      margin-top: 0.7em;
+      font-size: 0.3em;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+    }
+
+    /* Works */
+    main { width: 100%; max-width: 980px; align-self: center; }
+    .dilo { padding: 3.5em 0; border-top: 1px solid var(--line); }
+    .dilo:last-child { border-bottom: 1px solid var(--line); }
+    .dilo h2 {
+      font-size: clamp(1.4rem, 3vw, 2.3rem);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      text-shadow: 0 0 10px var(--glow);
+    }
+    .dilo h2 .preklad { display: block; margin-top: 0.4em; font-size: 0.5em; font-weight: 400; letter-spacing: 0.04em; }
+    .meta { margin-top: 0.7em; font-size: 13px; letter-spacing: 0.12em; }
+    .dilo p { max-width: 70ch; margin-top: 1.1em; }
+    .media { margin-top: 1.8em; }
+    .ramec {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 1px solid var(--line);
+      background: #000000;
+      box-shadow: 0 0 18px rgba(31, 61, 43, 0.35);
+    }
+    .ramec iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .ramec.na-vysku { aspect-ratio: 9 / 16; max-width: 360px; }
+    .odkazy { margin-top: 1.4em; font-size: 13px; letter-spacing: 0.06em; }
+    .odkazy a { text-underline-offset: 0.25em; }
+    img { display: block; max-width: 100%; height: auto; }
+    figcaption { margin-top: 0.6em; font-size: 13px; font-weight: 400; letter-spacing: 0.04em; }
+    .instalace { max-width: 300px; margin-top: 1.8em; }
+
+    /* Images and sound */
+    .galerie { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; align-items: start; }
+    .galerie img { width: 100%; }
+    .galerie.dvojice { grid-template-columns: 2fr 1fr; }
+    .pasy { display: grid; gap: 14px; }
+    .pasy img { width: 100%; }
+    .obraz img { width: auto; max-width: 100%; max-height: 80vh; }
+    .obraz.maly { max-width: 360px; margin-top: 1.8em; }
+    .popisek { font-size: 13px; font-weight: 400; letter-spacing: 0.04em; }
+    audio { display: block; width: 100%; max-width: 640px; color-scheme: dark; }
+    @media (max-width: 640px) { .galerie.dvojice { grid-template-columns: 1fr; } }
+
+    /* Dots with page names */
+    nav { align-self: stretch; margin-top: auto; }
+    nav ul { list-style: none; display: flex; justify-content: space-between; align-items: flex-start; }
+    .tecka {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8em;
+      max-width: 9em;
+      font-size: 12px;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-decoration: none;
+    }
+    .tecka i {
+      display: block;
+      width: clamp(40px, 7vw, 96px);
+      height: clamp(40px, 7vw, 96px);
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 14px var(--glow);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    a.tecka:hover i, a.tecka:focus-visible i { transform: scale(1.18); filter: brightness(1.5); }
+    .tecka[aria-current="page"] i { background: transparent; box-shadow: inset 0 0 0 3px var(--green), 0 0 14px var(--glow); }
+
+    /* On phones the five dots share the width equally and long names wrap. */
+    @media (max-width: 640px) {
+      nav { align-self: stretch; }
+      nav ul { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+      .tecka { max-width: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .vlnky i { animation: none !important; }
+      .tecka i { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="jazyk" href="cs/silent-period-archive.html" hreflang="cs" lang="cs" aria-label="Česká verze">
+    <span class="jiny">cz</span>
+    <span class="vlnky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span>en</span>
+  </a>
+
+  <a class="jmeno" href="index.html">
+    <span>Aneta</span>
+    <span>Jagschová</span>
+    <small>silent period archive</small>
+  </a>
+
+  <main>
+    <article class="dilo">
+      <h2>Trofeje II.<span class="preklad">Trophies II</span></h2>
+      <p class="meta">2024 · 3D print</p>
+      <p>I wanted to explore what it would be like to change the state of matter once again and bring the object back into the physical world through 3D printing. Can we just save objects, print them later and have them back? How does that change the object? Will a plastic version be enough for us in the future? Will it have to be enough?</p>
+      <p>The plastic stones around it are also part of the same ongoing series. This project is about the human obsession with collecting. What would it be like if, instead of bringing our grandmothers pebbles from a beach holiday, we sent them 3D scans and they printed them at home?</p>
+      <div class="media galerie">
+        <img src="media/img/trofeje-ii-2.jpg" alt="Exhibition room with white plinths and 3D-printed objects" loading="lazy">
+        <img src="media/img/trofeje-ii-1.jpg" alt="Translucent 3D-printed snowman in a bowl surrounded by grey plastic stones" loading="lazy">
+        <img src="media/img/trofeje-ii-3.jpg" alt="Top view of the printed bowl and scattered plastic stones" loading="lazy">
+      </div>
+      <p class="popisek">Photos from the Crossroads exhibition, Aalto University, Finland, November 2024</p>
+    </article>
+
+    <article class="dilo">
+      <h2>INSKATEWETRUST</h2>
+      <p class="meta">2023 · photographs, posters, street art</p>
+      <p>A series of photographs, posters and street art inspired by the Cristo Rei statue in Lisbon.</p>
+      <div class="media pasy">
+        <img src="media/img/inskatewetrust-1.jpg" alt="Shadows of a skate tool shaped like the Cristo Rei statue" loading="lazy">
+        <img src="media/img/inskatewetrust-2.jpg" alt="Skate tool photos and hand-painted posters: In skate we trust, Skate is the tool to unite nations" loading="lazy">
+        <img src="media/img/inskatewetrust-3.jpg" alt="Chalk drawings of the skate tool on pavement" loading="lazy">
+      </div>
+      <figure class="obraz maly"><img src="media/img/inskatewetrust-painting.jpg" alt="Painting of a skate tool as a cross with a white flame" loading="lazy"><figcaption>acrylic on paper, 25 × 25 cm</figcaption></figure>
+    </article>
+
+    <article class="dilo">
+      <h2>Vltavská už není tak cizí<span class="preklad">Vltavská Is No Longer So Strange</span></h2>
+      <p class="meta">2022 · field recording composition · part of my bachelor's thesis</p>
+      <audio class="media" controls preload="none" src="media/audio/vltavska.mp3"></audio>
+      <p>Part of my bachelor's thesis, in which I focused on the Place called Vltavská and on how a place people pass through becomes an inhabited place, and explored the fear of various subcultures of losing their place because of new planned development. The practical part included a kind of reportage field-recording composition about Vltavská, which I had gathered there over the previous months. If I remember correctly, I recorded everything only on my phone. At that time I knew absolutely nothing about sound, not even how to operate a recorder or where to get one. But I think this is where my journey from visual art towards sound began.</p>
+      <p>The full original composition is 20 minutes long. This is the shortened version I also used at my bachelor's thesis defence.</p>
+      <p class="odkazy"><a href="https://dspace.cuni.cz/handle/20.500.11956/175896">bachelor's thesis</a></p>
+    </article>
+
+    <article class="dilo">
+      <h2>Chvilka soukromí<span class="preklad">A Moment of Privacy</span></h2>
+      <p class="meta">2020 · acrylic on wood and paper, pastel · 140 × 93 cm</p>
+      <div class="media galerie dvojice">
+        <img src="media/img/chvilka-soukromi.jpg" alt="Painting of a nude figure sitting on a toilet on a pink tiled floor" loading="lazy">
+        <figure><img src="media/img/chvilka-soukromi-exhibition.jpg" alt="The painting leaning against a wall in a gallery corridor" loading="lazy"><figcaption>Exhibition “Sítě”, 3/2024, Galerie Šachta, FAMUFEST 2024</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="dilo">
+      <h2>Self portrait</h2>
+      <p class="meta">2020 · acrylic on canvas</p>
+      <figure class="media obraz"><img src="media/img/self-portrait.jpg" alt="Green figure with a long red grin on a red background" loading="lazy"></figure>
+    </article>
+
+    <article class="dilo">
+      <h2>Round octagonal square</h2>
+      <p class="meta">2020 · ink and coffee on cardboard · 70 × 70 cm</p>
+      <figure class="media obraz"><img src="media/img/round-octagonal-square.jpg" alt="Pale bent figure painted on cardboard" loading="lazy"></figure>
+    </article>
+
+    <article class="dilo">
+      <h2>Body over body</h2>
+      <p class="meta">2019 · pastel, acrylics, charcoal, pencil on paper</p>
+      <figure class="media obraz"><img src="media/img/body-over-body.jpg" alt="Cut-out seated figure in pink and yellow on a black background" loading="lazy"></figure>
+    </article>
+  </main>
+
+  <nav aria-label="Site sections">
+    <ul>
+      <li><a class="tecka" href="https://anethruskajagsch.github.io/zvuk/"><i aria-hidden="true"></i><span>zvuk</span></a></li>
+      <li><a class="tecka" href="cv.html"><i aria-hidden="true"></i><span>CV</span></a></li>
+      <li><a class="tecka" href="before-sound.html"><i aria-hidden="true"></i><span>Before Sound</span></a></li>
+      <li><a class="tecka" href="silent-period-archive.html" aria-current="page"><i aria-hidden="true"></i><span>Silent Period Archive</span></a></li>
+      <li><a class="tecka" href="sound-design-for-others.html"><i aria-hidden="true"></i><span>Sound Design for Others</span></a></li>
+    </ul>
+  </nav>
+
+</body>
+</html>

@@ -107,8 +107,20 @@
     .co strong { display: block; font-weight: 500; }
 
     nav { margin-top: auto; }
-    nav ul { list-style: none; display: flex; gap: clamp(14px, 3vw, 28px); }
+    nav ul { list-style: none; display: flex; align-items: flex-start; gap: clamp(14px, 3vw, 28px); }
     .tecka {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7em;
+      max-width: 9em;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+    .tecka i {
       display: block;
       width: clamp(26px, 4vw, 40px);
       height: clamp(26px, 4vw, 40px);
@@ -116,16 +128,22 @@
       background: var(--ink);
       transition: transform 0.25s ease;
     }
-    a.tecka:hover, a.tecka:focus-visible { transform: scale(1.18); }
-    .tecka[aria-current="page"] { background: transparent; box-shadow: inset 0 0 0 3px var(--ink); }
+    a.tecka:hover i, a.tecka:focus-visible i { transform: scale(1.18); }
+    .tecka[aria-current="page"] i { background: transparent; box-shadow: inset 0 0 0 3px var(--ink); }
 
     @media (max-width: 640px) {
       main li { grid-template-columns: 1fr; }
       .kdy { margin-bottom: 0.2em; }
     }
+    /* On phones the five dots share the width equally and long names wrap. */
+    @media (max-width: 640px) {
+      nav { align-self: stretch; }
+      nav ul { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+      .tecka { max-width: none; }
+    }
     @media (prefers-reduced-motion: reduce) {
       .vlnky i { animation: none !important; }
-      .tecka { transition: none; }
+      .tecka i { transition: none; }
     }
   </style>
 </head>
@@ -177,11 +195,11 @@
 
   <nav aria-label="Site sections">
     <ul>
-      <li><a class="tecka" href="https://anethruskajagsch.github.io/zvuk/" aria-label="sound (zvuk)" title="sound"></a></li>
-      <li><a class="tecka" href="cv.html" aria-label="cv" title="cv" aria-current="page"></a></li>
-      <li><span class="tecka" aria-hidden="true"></span></li>
-      <li><span class="tecka" aria-hidden="true"></span></li>
-      <li><span class="tecka" aria-hidden="true"></span></li>
+      <li><a class="tecka" href="https://anethruskajagsch.github.io/zvuk/"><i aria-hidden="true"></i><span>zvuk</span></a></li>
+      <li><a class="tecka" href="cv.html" aria-current="page"><i aria-hidden="true"></i><span>CV</span></a></li>
+      <li><a class="tecka" href="before-sound.html"><i aria-hidden="true"></i><span>Before Sound</span></a></li>
+      <li><a class="tecka" href="silent-period-archive.html"><i aria-hidden="true"></i><span>Silent Period Archive</span></a></li>
+      <li><a class="tecka" href="sound-design-for-others.html"><i aria-hidden="true"></i><span>Sound Design for Others</span></a></li>
     </ul>
   </nav>
 </body>
