@@ -151,6 +151,31 @@
       .vlnky i { animation: none !important; }
       .tecka i { transition: none; }
     }
+
+    /* Read aloud: plays the artist's own recording. Hidden until that file exists. */
+    .cist {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9em;
+      min-height: 40px;
+      margin-bottom: 1.8em;
+      padding: 0 1.2em;
+      border: 1px solid var(--green);
+      border-radius: 999px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-shadow: 0 0 8px var(--glow);
+      box-shadow: 0 0 10px var(--glow);
+      cursor: pointer;
+      transition: filter 0.25s ease;
+    }
+    .cist[hidden] { display: none; }
+    .cist:hover, .cist:focus-visible { filter: brightness(1.5); }
+    .cist:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+    .cist.hraje .vlnky i { animation: eq 0.8s ease-in-out infinite; }
   </style>
 </head>
 <body>
@@ -166,6 +191,7 @@
   </a>
 
   <main class="manifest" aria-label="Umělecký manifest">
+    <button class="cist" type="button" data-src="../media/voice/home-cs.m4a" data-play="přečíst" data-stop="přestat číst" hidden><span class="vlnky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cist-text">přečíst</span></button>
     <p>Zachytit drobné každodenní absurdity, udržet je, zapamatovat si. Bojovat s pamětí. Porozumět. Proto tvořím.</p>
     <p>Vždy mám sklon sympatizovat se slabými a přehlíženými a snažím se na ně upozornit – na prostory, významy, činy, rituály, lidi. Takové je i moje hlavní médium – zvuk jako zapomenutý spodní proud všech procesů. Od zvukových krajin každodennosti po filmový zvuk. Inspiraci čerpám z nekonečného toulání po světě. Neustále na lovu podstaty, přítomnosti, uvědomění, smíchu. Působím v rolích umělkyně, výzkumnice a pedagožky – a to je neklidný způsob, jak vytvářet význam. Někde mezi. Nasyrovo.</p>
     <p>Mým hlavním nutkáním je archivovat, chránit, držet se trofejí a sbírek – a ještě silnějším nutkáním je smát se sama sobě i celému antropocénu, že takové nutkání vůbec máme.</p>
@@ -181,5 +207,35 @@
       <li><a class="tecka" href="sound-design-for-others.html"><i aria-hidden="true"></i><span>Sound Design for Others</span></a></li>
     </ul>
   </nav>
+  <script>
+    // Read aloud: plays the artist's own recording from data-src. The button stays hidden
+    // until that file exists, so a new recording only has to be dropped into media/voice/.
+    (() => {
+      const btn = document.querySelector('.cist');
+      const text = btn.querySelector('.cist-text');
+      const voice = new Audio();
+      voice.preload = 'none';
+      voice.src = btn.dataset.src;
+      const show = () => { btn.hidden = false; };
+      fetch(btn.dataset.src, { method: 'HEAD', cache: 'no-store' })
+        .then(r => { if (r.ok) show(); })
+        .catch(() => {                      // page opened straight from a file: ask the audio element
+          voice.addEventListener('loadedmetadata', show, { once: true });
+          voice.preload = 'metadata';
+          voice.load();
+        });
+      const sync = () => {
+        btn.classList.toggle('hraje', !voice.paused);
+        text.textContent = voice.paused ? btn.dataset.play : btn.dataset.stop;
+      };
+      voice.addEventListener('play', sync);
+      voice.addEventListener('pause', sync);
+      voice.addEventListener('ended', () => { voice.currentTime = 0; });
+      btn.addEventListener('click', () => {
+        if (voice.paused) voice.play().catch(sync);
+        else { voice.pause(); voice.currentTime = 0; }
+      });
+    })();
+  </script>
 </body>
 </html>
