@@ -151,6 +151,31 @@
       .vlnky i { animation: none !important; }
       .tecka i { transition: none; }
     }
+
+    /* Read aloud: plays the artist's own recording. Hidden until that file exists. */
+    .cist {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9em;
+      min-height: 40px;
+      margin-bottom: 1.8em;
+      padding: 0 1.2em;
+      border: 1px solid var(--green);
+      border-radius: 999px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-shadow: 0 0 8px var(--glow);
+      box-shadow: 0 0 10px var(--glow);
+      cursor: pointer;
+      transition: filter 0.25s ease;
+    }
+    .cist[hidden] { display: none; }
+    .cist:hover, .cist:focus-visible { filter: brightness(1.5); }
+    .cist:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+    .cist.hraje .vlnky i { animation: eq 0.8s ease-in-out infinite; }
   </style>
 </head>
 <body>
@@ -166,6 +191,7 @@
   </a>
 
   <main class="manifest" aria-label="Artist manifesto">
+    <button class="cist" type="button" data-src="media/voice/home-en.m4a" data-play="read aloud" data-stop="stop reading" hidden><span class="vlnky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cist-text">read aloud</span></button>
     <p>To capture little everyday absurdities, to hold on, to remember. To fight the memory. To understand. That is why I create.</p>
     <p>I always tend to sympathise with the weak and the overlooked, trying to bring attention to it – spaces, meanings, acts, rituals, people. Even my main medium is like that – sound as the forgotten undercurrent in all processes. From soundscapes of everydayness to film sound. I draw inspiration from endless wandering around the globe. Always on the hunt for substance, for presence, for awareness, for laughter. Acting in the roles of Artist, researcher, and teacher which makes for a restless way of making meaning. In between. In the raw.</p>
     <p>My main urge is to archive, to protect, to hold on to trophies and collections, and an even bigger one is to laugh at myself and the whole Anthropocene for having this urge.</p>
@@ -181,5 +207,35 @@
       <li><a class="tecka" href="sound-design-for-others.html"><i aria-hidden="true"></i><span>Sound Design for Others</span></a></li>
     </ul>
   </nav>
+  <script>
+    // Read aloud: plays the artist's own recording from data-src. The button stays hidden
+    // until that file exists, so a new recording only has to be dropped into media/voice/.
+    (() => {
+      const btn = document.querySelector('.cist');
+      const text = btn.querySelector('.cist-text');
+      const voice = new Audio();
+      voice.preload = 'none';
+      voice.src = btn.dataset.src;
+      const show = () => { btn.hidden = false; };
+      fetch(btn.dataset.src, { method: 'HEAD', cache: 'no-store' })
+        .then(r => { if (r.ok) show(); })
+        .catch(() => {                      // page opened straight from a file: ask the audio element
+          voice.addEventListener('loadedmetadata', show, { once: true });
+          voice.preload = 'metadata';
+          voice.load();
+        });
+      const sync = () => {
+        btn.classList.toggle('hraje', !voice.paused);
+        text.textContent = voice.paused ? btn.dataset.play : btn.dataset.stop;
+      };
+      voice.addEventListener('play', sync);
+      voice.addEventListener('pause', sync);
+      voice.addEventListener('ended', () => { voice.currentTime = 0; });
+      btn.addEventListener('click', () => {
+        if (voice.paused) voice.play().catch(sync);
+        else { voice.pause(); voice.currentTime = 0; }
+      });
+    })();
+  </script>
 </body>
 </html>
