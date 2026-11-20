@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Aneta Jagschová</title>
+  <link rel="alternate" hreflang="en" href="en/index.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -24,6 +25,7 @@
       align-items: flex-end;
       gap: clamp(48px, 9vh, 112px);
       padding: var(--pad);
+      padding-top: max(var(--pad), 64px);
       background: var(--bg);
       color: var(--green);
       font-family: "IBM Plex Mono", "JetBrains Mono", "Space Mono", ui-monospace, Menlo, monospace;
@@ -38,6 +40,35 @@
     }
     a { color: inherit; text-decoration: none; }
     a:focus-visible { outline: 2px solid var(--green); outline-offset: 6px; }
+
+    /* Language switch: cz / en around a tiny waveform. */
+    .jazyk {
+      position: absolute;
+      top: max(18px, calc(var(--pad) / 3));
+      right: var(--pad);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6em;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-shadow: 0 0 8px var(--glow);
+    }
+    .jazyk .jiny { opacity: 0.55; transition: opacity 0.25s ease; }
+    .jazyk:hover .jiny, .jazyk:focus-visible .jiny { opacity: 1; }
+    .vlnky { display: inline-flex; align-items: center; gap: 3px; height: 22px; filter: drop-shadow(0 0 3px var(--glow)); }
+    .vlnky i { display: block; width: 3px; border-radius: 2px; background: currentColor; }
+    .vlnky i:nth-child(1) { height: 6px; }
+    .vlnky i:nth-child(2) { height: 14px; }
+    .vlnky i:nth-child(3) { height: 22px; }
+    .vlnky i:nth-child(4) { height: 11px; }
+    .vlnky i:nth-child(5) { height: 18px; }
+    .vlnky i:nth-child(6) { height: 8px; }
+    .vlnky i:nth-child(7) { height: 4px; }
+    .jazyk:hover .vlnky i, .jazyk:focus-visible .vlnky i { animation: eq 0.8s ease-in-out infinite; }
+    .vlnky i:nth-child(2n) { animation-delay: -0.4s; }
+    .vlnky i:nth-child(3n) { animation-delay: -0.2s; }
+    @keyframes eq { 50% { transform: scaleY(0.3); } }
 
     .jmeno {
       font-size: clamp(2.6rem, 10vw, 8rem);
@@ -97,21 +128,28 @@
     .jmeno:hover, .jmeno:focus-visible { filter: brightness(1.3); }
     @media (prefers-reduced-motion: reduce) {
       .jmeno .kurzor { animation: none; }
+      .vlnky i { animation: none !important; }
       .tecka { transition: none; }
     }
   </style>
 </head>
 <body>
+  <a class="jazyk" href="en/index.html" hreflang="en" lang="en" aria-label="English version">
+    <span>cz</span>
+    <span class="vlnky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="jiny">en</span>
+  </a>
+
   <a class="jmeno" href="https://anethruskajagsch.github.io/zvuk/">
     <span>Aneta</span>
     <span>Jagschová<i class="kurzor" aria-hidden="true"></i></span>
   </a>
 
-  <main class="manifest" lang="en" aria-label="Artist manifesto">
-    <p>To capture little everyday absurdities, to hold on, to remember. To fight the memory. To understand. That is why I create.</p>
-    <p>I always tend to sympathise with the weak and the overlooked, trying to bring attention to it – spaces, meanings, acts, rituals, people. Even my main medium is like that – sound as the forgotten undercurrent in all processes. From soundscapes of everydayness to film sound. I draw inspiration from endless wandering around the globe. Always on the hunt for substance, for presence, for awareness, for laughter. Acting in the roles of Artist, researcher, and teacher which makes for a restless way of making meaning. In between. In the raw.</p>
-    <p>My main urge is to archive, to protect, to hold on to trophies and collections, and an even bigger one is to laugh at myself and the whole Anthropocene for having this urge.</p>
-    <p>I always oscillate between preserving and intervening, finding and contextualising. Between public and private space. And what is my ultimate goal? Just to let go.</p>
+  <main class="manifest" aria-label="Umělecký manifest">
+    <p>Zachytit drobné každodenní absurdity, udržet je, zapamatovat si. Bojovat s pamětí. Porozumět. Proto tvořím.</p>
+    <p>Vždy mám sklon sympatizovat se slabými a přehlíženými a snažím se na ně upozornit – na prostory, významy, činy, rituály, lidi. Takové je i moje hlavní médium – zvuk jako zapomenutý spodní proud všech procesů. Od zvukových krajin každodennosti po filmový zvuk. Inspiraci čerpám z nekonečného toulání po světě. Neustále na lovu podstaty, přítomnosti, uvědomění, smíchu. Působím v rolích umělkyně, výzkumnice a pedagožky – a to je neklidný způsob, jak vytvářet význam. Někde mezi. Nasyrovo.</p>
+    <p>Mým hlavním nutkáním je archivovat, chránit, držet se trofejí a sbírek – a ještě silnějším nutkáním je smát se sama sobě i celému antropocénu, že takové nutkání vůbec máme.</p>
+    <p>Neustále osciluji mezi uchováváním a zasahováním, nalézáním a zasazováním do souvislostí. Mezi veřejným a soukromým prostorem. A jaký je můj konečný cíl? Prostě to pustit.</p>
   </main>
 
   <nav aria-label="Části webu">
