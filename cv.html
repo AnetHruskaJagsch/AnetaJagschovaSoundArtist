@@ -8,10 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
-    /* Inverse of the main page: black ink on forest green. */
+    /* White paper with fine forest-green dots, forest-green text. */
     :root {
-      --bg: #1f3d2b;
-      --ink: #000000;
+      --bg: #ffffff;
+      --ink: #1f3d2b;
+      --dot: rgba(31, 61, 43, 0.2);
+      --line: rgba(31, 61, 43, 0.35);
       --pad: clamp(16px, 6vw, 96px);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,11 +25,12 @@
       align-items: flex-end;
       gap: clamp(48px, 8vw, 96px);
       padding: var(--pad);
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
+      background-size: 14px 14px;
       color: var(--ink);
       font-family: "IBM Plex Mono", "JetBrains Mono", "Space Mono", ui-monospace, Menlo, monospace;
       font-size: 16px;
-      font-weight: 500;
       line-height: 1.7;
     }
     ::selection { background: var(--ink); color: var(--bg); }
@@ -67,9 +70,9 @@
       grid-template-columns: 19ch 1fr;
       gap: 0 2ch;
       padding: 0.9em 0;
-      border-top: 1px solid rgba(0, 0, 0, 0.5);
+      border-top: 1px solid var(--line);
     }
-    main li:last-child { border-bottom: 1px solid rgba(0, 0, 0, 0.5); }
+    main li:last-child { border-bottom: 1px solid var(--line); }
     .kdy { font-weight: 500; }
     .co strong { display: block; font-weight: 500; }
 
