@@ -1,6 +1,9 @@
-// Soundtrack oscilloscope: three green lines for dialogue, music and sound design.
+// Soundtrack oscilloscope: three green lines for dialogue, music and foley.
 // Tone.js analyses the <audio> element live; each line moves only while its layer is playing,
 // so when layers overlap, several lines move at once. Used by sound-design-for-others.html (en + cs).
+// The sound itself is encrypted (media/audio/girl-is-monster.enc). Without the password the play button
+// runs the lines silently (drawn from the loudness envelope below); the password decrypts the file in the
+// browser and the real sound plays. The password is not stored anywhere on the site.
 
 // ---------------------------------------------------------------------------
 // WHAT PLAYS WHEN · KDY HRAJE CO
@@ -14,7 +17,7 @@ const OSCILATOR_CASTI = {
     dialog: ['0:20-0:34', '0:37-0:48', '1:01-1:38', '2:02-2:24', '3:28-3:41', '3:44-3:58',
              '4:19-4:31', '4:53-5:07', '5:49-5:53', '5:57-6:13'],
     hudba:  ['0:06-0:35', '2:45-3:43', '6:23-7:40'],
-    sd:     ['0:33-1:01', '1:33-2:14', '2:25-2:46', '4:00-4:53', '5:07-6:00'],
+    foley:  ['0:33-1:01', '1:33-2:14', '2:25-2:46', '4:00-4:53', '5:07-6:00'],
   },
 };
 
@@ -24,10 +27,10 @@ const OSCILATOR_OBALKY = {
 };
 
 (() => {
-  const VRSTVY = [            // top to bottom: dialogue lightest, sound design darkest
+  const VRSTVY = [            // top to bottom: dialogue lightest, foley darkest
     { key: 'dialog', barva: '#8cc79c' },
     { key: 'hudba', barva: '#4f8f66' },
-    { key: 'sd', barva: '#2f6342' },
+    { key: 'foley', barva: '#2f6342' },
   ];
   const ZNAKY = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   const KROK = 0.512;
@@ -62,24 +65,41 @@ const OSCILATOR_OBALKY = {
         hlas.chain(new Tone.Filter(3400, 'lowpass'), dx);
         const spodek = new Tone.Filter(1200, 'lowpass');            // music line: the smoother low/mid part
         spodek.connect(mx);
-        Tone.connect(zdroj, hlas); Tone.connect(zdroj, spodek); Tone.connect(zdroj, fx);   // sound design: the full mix
+        Tone.connect(zdroj, hlas); Tone.connect(zdroj, spodek); Tone.connect(zdroj, fx);   // foley: the full mix
         analyzatory = [dx, mx, fx]; zive = true;
       } catch (e) { analyzatory = []; zive = false; }
     }
 
+    // ---- player: a silent clock while the sound is locked, the real <audio> once unlocked ----
+    let odemceno = false;
+    const tiche = { t: 0, od: 0, hraje: false };
+    const prehrava = () => odemceno ? !audio.paused : tiche.hraje;
+    const kdy = () => odemceno ? audio.currentTime
+      : Math.min(delka || Infinity, tiche.hraje ? tiche.t + (performance.now() - tiche.od) / 1000 : tiche.t);
+    function ticho(hrat) {
+      tiche.t = kdy(); tiche.od = performance.now();
+      if (hrat && tiche.t >= delka - 0.2) tiche.t = 0;
+      tiche.hraje = hrat; stav();
+    }
+    function skoc(t) {
+      if (odemceno) audio.currentTime = t; else { tiche.t = t; tiche.od = performance.now(); }
+      rozbeh();
+    }
+
     hraj.addEventListener('click', () => {
+      if (!odemceno) { ticho(!tiche.hraje); return; }          // without the password: lines only, no sound
       if (audio.paused) {
         zapoj();
         if (zive) Tone.start();
         audio.play().catch(() => {});
       } else audio.pause();
     });
-    const stav = () => {
-      const hraje = !audio.paused;
+    function stav() {
+      const hraje = prehrava();
       hraj.classList.toggle('hraje', hraje);
       hraj.setAttribute('aria-label', hraje ? hraj.dataset.pauza : hraj.dataset.hraj);
       rozbeh();
-    };
+    }
     audio.addEventListener('play', stav);
     audio.addEventListener('pause', stav);
     audio.addEventListener('error', stav);
@@ -89,7 +109,67 @@ const OSCILATOR_OBALKY = {
     let tahne = false;
     posun.addEventListener('pointerdown', () => { tahne = true; });
     addEventListener('pointerup', () => { tahne = false; });
-    posun.addEventListener('input', () => { audio.currentTime = +posun.value; rozbeh(); });
+    posun.addEventListener('input', () => skoc(+posun.value));
+
+    // ---- unlocking: the sound file on the site is encrypted with the password ----
+    // File layout: salt (16) | iv (16) | AES-256-CBC ciphertext | HMAC-SHA256 of iv+ciphertext (32).
+    // Keys: PBKDF2-SHA256(password, salt, 200 000) → 64 bytes (32 for AES, 32 for HMAC).
+    const zamek = fig.querySelector('.oscilo-zamek');
+    if (zamek) {
+      const pole = zamek.querySelector('input'), tlacitko = zamek.querySelector('button');
+      const zprava = zamek.querySelector('.oscilo-zprava'), d = zamek.dataset;
+      let sifra = null;                                         // the encrypted bytes, downloaded once
+      const stahni = () => sifra || (sifra = (async () => {
+        const r = await fetch(fig.dataset.zamek);
+        if (!r.ok) throw new Error('http ' + r.status);
+        const celkem = +r.headers.get('content-length') || 0, cteni = r.body.getReader(), kusy = [];
+        let mam = 0;
+        for (;;) {
+          const { done, value } = await cteni.read();
+          if (done) break;
+          kusy.push(value); mam += value.length;
+          if (celkem) zprava.textContent = `${d.nacitam} ${Math.round(mam / celkem * 100)} %`;
+        }
+        const vse = new Uint8Array(mam); let o = 0;
+        for (const k of kusy) { vse.set(k, o); o += k.length; }
+        return vse;
+      })().catch(e => { sifra = null; throw e; }));
+      async function rozsifruj(b, heslo) {
+        const zHesla = await crypto.subtle.importKey('raw', new TextEncoder().encode(heslo), 'PBKDF2', false, ['deriveBits']);
+        const bity = new Uint8Array(await crypto.subtle.deriveBits(
+          { name: 'PBKDF2', salt: b.subarray(0, 16), iterations: 200000, hash: 'SHA-256' }, zHesla, 512));
+        const mk = await crypto.subtle.importKey('raw', bity.slice(32), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
+        if (!await crypto.subtle.verify('HMAC', mk, b.subarray(b.length - 32), b.subarray(16, b.length - 32))) return null;
+        const ek = await crypto.subtle.importKey('raw', bity.slice(0, 32), 'AES-CBC', false, ['decrypt']);
+        return crypto.subtle.decrypt({ name: 'AES-CBC', iv: b.subarray(16, 32) }, ek, b.subarray(32, b.length - 32));
+      }
+      zamek.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!pole.value) { pole.focus(); return; }
+        tlacitko.disabled = true; zamek.classList.remove('spatne');
+        zprava.textContent = d.nacitam;
+        try {
+          if (!window.crypto || !crypto.subtle) throw new Error('no crypto');
+          const zvuk = await rozsifruj(await stahni(), pole.value);
+          if (!zvuk) {
+            zprava.textContent = d.spatne; zamek.classList.add('spatne');
+            pole.select(); tlacitko.disabled = false; return;
+          }
+          const pozice = kdy();
+          if (tiche.hraje) ticho(false);
+          audio.src = URL.createObjectURL(new Blob([zvuk], { type: 'audio/mp4' }));
+          audio.addEventListener('loadedmetadata', () => { audio.currentTime = pozice; rozbeh(); }, { once: true });
+          audio.load();
+          odemceno = true; sifra = null; pole.value = '';
+          fig.classList.add('odemceno');
+          zprava.textContent = d.odemceno;
+          audio.addEventListener('play', () => { zprava.textContent = ''; }, { once: true });
+          stav(); hraj.focus();
+        } catch (err) {
+          zprava.textContent = d.chyba; tlacitko.disabled = false;
+        }
+      });
+    }
 
     // ---- sizes ----
     let W = 0, H = 0, OW = 0, OH = 0, dpr = 1;
@@ -132,14 +212,15 @@ const OSCILATOR_OBALKY = {
     function snimek(now) {
       const dt = Math.min(0.1, (now - posledni) / 1000); posledni = now;
       kresli(dt);
-      raf = (!audio.paused || now < dobeh) ? requestAnimationFrame(snimek) : 0;
+      raf = (prehrava() || now < dobeh) ? requestAnimationFrame(snimek) : 0;
     }
     function hladina(t) {
       const i = Math.floor(t / KROK);
       return obalka.length ? obalka[Math.min(obalka.length - 1, Math.max(0, i))] : 0.5;
     }
     function kresli(dt) {
-      const t = audio.currentTime || +posun.value || 0, hraje = !audio.paused;
+      if (!odemceno && tiche.hraje && kdy() >= delka) ticho(false);   // the silent run ends with the film
+      const t = kdy() || 0, hraje = prehrava();
       const akt = aktivni(t);
       akt.forEach((a, k) => { brany[k] += ((a ? 1 : 0) - brany[k]) * (dt ? 1 - Math.exp(-dt / 0.15) : 1); });
 
@@ -196,7 +277,7 @@ const OSCILATOR_OBALKY = {
       // timeline + time
       go.setTransform(1, 0, 0, 1, 0, 0);
       go.clearRect(0, 0, osa.width, osa.height);
-      go.drawImage(zaklad_, 0, 0);
+      if (zaklad_.width && zaklad_.height) go.drawImage(zaklad_, 0, 0);   // skip while the canvas has no size yet
       go.setTransform(dpr, 0, 0, dpr, 0, 0);
       const px = Math.round(t / (delka || 1) * OW);
       go.fillStyle = '#8cc79c'; go.shadowColor = '#8cc79c'; go.shadowBlur = 6;
