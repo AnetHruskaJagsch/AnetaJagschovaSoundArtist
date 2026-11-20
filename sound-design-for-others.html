@@ -167,6 +167,47 @@
       .vlnky i { animation: none !important; }
       .tecka i { transition: none; }
     }
+
+    /* Soundtrack oscilloscope: three lines for dialogue, music and sound design. */
+    .oscilo { --dx: #8cc79c; --mx: #4f8f66; --fx: #2f6342; margin-top: 1.8em; }
+    .oscilo audio { display: none; }
+    .oscilo-obraz { border: 1px solid var(--line); background: #000000; box-shadow: 0 0 18px rgba(31, 61, 43, 0.35); }
+    .oscilo-platno { display: block; width: 100%; height: clamp(210px, 28vw, 300px); }
+    .oscilo-ovladani { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6em 1.1em; margin-top: 1em; font-size: 13px; letter-spacing: 0.06em; }
+    .oscilo-hraj {
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--green);
+      color: #000000;
+      box-shadow: 0 0 14px var(--glow);
+      cursor: pointer;
+      transition: filter 0.25s ease;
+    }
+    .oscilo-hraj:hover, .oscilo-hraj:focus-visible { filter: brightness(1.5); }
+    .oscilo-hraj:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+    .oscilo-hraj svg { width: 18px; height: 18px; fill: currentColor; }
+    .oscilo-hraj .pauza, .oscilo-hraj.hraje .play { display: none; }
+    .oscilo-hraj.hraje .pauza { display: block; }
+    .oscilo-cas { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .oscilo-ted { margin-left: auto; text-align: right; }
+    .oscilo-osa { position: relative; margin-top: 0.9em; }
+    .oscilo-casti { display: block; width: 100%; height: 54px; }
+    .oscilo-posun { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+    .oscilo-osa:focus-within { outline: 2px solid var(--green); outline-offset: 4px; }
+    .oscilo-legenda { margin-top: 1.4em; font-size: 13px; font-weight: 400; letter-spacing: 0.04em; }
+    .oscilo-legenda ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5em 1.8em; }
+    .oscilo-legenda li { display: inline-flex; align-items: center; gap: 0.7em; font-weight: 500; text-shadow: none; }
+    .oscilo-legenda li::before { content: ""; width: 28px; height: 3px; border-radius: 2px; background: currentColor; box-shadow: 0 0 6px currentColor; }
+    .oscilo-legenda .dx { color: var(--dx); }
+    .oscilo-legenda .mx { color: var(--mx); }
+    .oscilo-legenda .fx { color: var(--fx); }
+    .dilo .oscilo-legenda p { margin-top: 0.8em; }
+    @media (max-width: 640px) { .oscilo-ted { flex-basis: 100%; margin-left: 0; text-align: left; } }
   </style>
 </head>
 <body>
@@ -186,7 +227,27 @@
     <article class="dilo">
       <h2>Girl is monster<span class="preklad">directed by Sofie Lebow</span></h2>
       <p class="meta">2024 · student film, FAMU International APP programme · 8 min · soundtrack only</p>
-      <audio class="media" controls preload="none" src="media/audio/girl-is-monster.m4a"></audio>
+      <figure class="oscilo" data-casti="girl-is-monster" data-delka="464.56" data-dialog="dialogue" data-hudba="music" data-sd="sound design" data-ticho="silence">
+        <audio preload="none" src="media/audio/girl-is-monster.m4a"></audio>
+        <div class="oscilo-obraz"><canvas class="oscilo-platno" aria-hidden="true"></canvas></div>
+        <div class="oscilo-ovladani">
+          <button class="oscilo-hraj" type="button" aria-label="Play" data-hraj="Play" data-pauza="Pause"><svg class="play" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2l12 7-12 7z"/></svg><svg class="pauza" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 2h4v14H3zM11 2h4v14h-4z"/></svg></button>
+          <span class="oscilo-cas">0:00 / 7:44</span>
+          <span class="oscilo-ted"></span>
+        </div>
+        <div class="oscilo-osa">
+          <canvas class="oscilo-casti" aria-hidden="true"></canvas>
+          <input class="oscilo-posun" type="range" min="0" max="464.56" step="0.5" value="0" aria-label="Position in the soundtrack">
+        </div>
+        <figcaption class="oscilo-legenda">
+          <ul>
+            <li class="dx">dialogue</li>
+            <li class="mx">music</li>
+            <li class="fx">sound design</li>
+          </ul>
+          <p>Three lines, three layers of the soundtrack: dialogue is the lightest green, sound design the darkest. A line comes alive while its layer is playing; when the layers overlap, several lines move at once. The strip below shows where each layer plays in the whole film. Click it to jump there.</p>
+        </figcaption>
+      </figure>
       <p>I recorded the production sound on set and later did the sound design. I then worked on the sound mix together with the director and George Cremaschi. My first experience with sound post-production.</p>
     </article>
   </main>
@@ -201,5 +262,8 @@
     </ul>
   </nav>
 
+  <script>window.TONE_SILENCE_LOGGING = true;</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <script src="oscilator.js"></script>
 </body>
 </html>
