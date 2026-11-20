@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Aneta Jagschová — CV</title>
+  <link rel="alternate" hreflang="en" href="en/cv.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -25,6 +26,7 @@
       align-items: flex-end;
       gap: clamp(48px, 8vw, 96px);
       padding: var(--pad);
+      padding-top: max(var(--pad), 64px);
       background-color: var(--bg);
       background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
       background-size: 14px 14px;
@@ -36,6 +38,34 @@
     ::selection { background: var(--ink); color: var(--bg); }
     a { color: inherit; text-decoration: none; }
     a:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
+
+    /* Language switch: cz / en around a tiny waveform. */
+    .jazyk {
+      position: absolute;
+      top: max(18px, calc(var(--pad) / 3));
+      right: var(--pad);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6em;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+    }
+    .jazyk .jiny { opacity: 0.55; transition: opacity 0.25s ease; }
+    .jazyk:hover .jiny, .jazyk:focus-visible .jiny { opacity: 1; }
+    .vlnky { display: inline-flex; align-items: center; gap: 3px; height: 22px; }
+    .vlnky i { display: block; width: 3px; border-radius: 2px; background: currentColor; }
+    .vlnky i:nth-child(1) { height: 6px; }
+    .vlnky i:nth-child(2) { height: 14px; }
+    .vlnky i:nth-child(3) { height: 22px; }
+    .vlnky i:nth-child(4) { height: 11px; }
+    .vlnky i:nth-child(5) { height: 18px; }
+    .vlnky i:nth-child(6) { height: 8px; }
+    .vlnky i:nth-child(7) { height: 4px; }
+    .jazyk:hover .vlnky i, .jazyk:focus-visible .vlnky i { animation: eq 0.8s ease-in-out infinite; }
+    .vlnky i:nth-child(2n) { animation-delay: -0.4s; }
+    .vlnky i:nth-child(3n) { animation-delay: -0.2s; }
+    @keyframes eq { 50% { transform: scaleY(0.3); } }
 
     .jmeno {
       font-size: clamp(2.2rem, 7vw, 5.5rem);
@@ -94,11 +124,18 @@
       .kdy { margin-bottom: 0.2em; }
     }
     @media (prefers-reduced-motion: reduce) {
+      .vlnky i { animation: none !important; }
       .tecka { transition: none; }
     }
   </style>
 </head>
 <body>
+  <a class="jazyk" href="en/cv.html" hreflang="en" lang="en" aria-label="English version">
+    <span>cz</span>
+    <span class="vlnky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="jiny">en</span>
+  </a>
+
   <a class="jmeno" href="index.html">
     <span>Aneta</span>
     <span>Jagschová</span>
