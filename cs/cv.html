@@ -169,9 +169,39 @@
     .cist:hover, .cist.hraje { background: var(--ink); color: var(--bg); }
     .cist:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
     .cist.hraje .vlnky i { animation: eq 0.8s ease-in-out infinite; }
+    /* Separate, lighter dot for the zvuk site, top left next to the name. */
+    .zvuk-tecka {
+      position: absolute;
+      top: max(var(--pad), 64px);
+      left: var(--pad);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8em;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      color: #3f7a55;
+      text-decoration: none;
+    }
+    .zvuk-tecka i {
+      display: block;
+      width: clamp(26px, 4vw, 40px);
+      height: clamp(26px, 4vw, 40px);
+      border-radius: 50%;
+      background: #3f7a55;
+      box-shadow: 0 0 18px rgba(63, 122, 85, 0.55);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .zvuk-tecka:hover i, .zvuk-tecka:focus-visible i { transform: scale(1.12); filter: brightness(1.25); }
+    @media (prefers-reduced-motion: reduce) { .zvuk-tecka i { transition: none; } }
+
   </style>
 </head>
 <body>
+  <a class="zvuk-tecka" href="https://anethruskajagsch.github.io/zvuk/"><i aria-hidden="true"></i><span>zvuk</span></a>
+
   <a class="jazyk" href="../cv.html" hreflang="en" lang="en" aria-label="English version">
     <span>cz</span>
     <span class="vlnky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
@@ -220,7 +250,7 @@
 
   <nav aria-label="Části webu">
     <ul>
-      <li><a class="tecka" href="https://anethruskajagsch.github.io/zvuk/"><i aria-hidden="true"></i><span>zvuk</span></a></li>
+      <li><a class="tecka" href="sound-acousmatic.html"><i aria-hidden="true"></i><span>Sound/Acousmatic</span></a></li>
       <li><a class="tecka" href="cv.html" aria-current="page"><i aria-hidden="true"></i><span>CV</span></a></li>
       <li><a class="tecka" href="before-sound.html"><i aria-hidden="true"></i><span>Before Sound</span></a></li>
       <li><a class="tecka" href="silent-period-archive.html"><i aria-hidden="true"></i><span>Silent Period Archive</span></a></li>
