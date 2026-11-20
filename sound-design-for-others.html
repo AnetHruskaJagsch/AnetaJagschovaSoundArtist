@@ -168,7 +168,7 @@
       .tecka i { transition: none; }
     }
 
-    /* Soundtrack oscilloscope: three lines for dialogue, music and sound design. */
+    /* Soundtrack oscilloscope: three lines for dialogue, music and foley. */
     .oscilo { --dx: #8cc79c; --mx: #4f8f66; --fx: #2f6342; margin-top: 1.8em; }
     .oscilo audio { display: none; }
     .oscilo-obraz { border: 1px solid var(--line); background: #000000; box-shadow: 0 0 18px rgba(31, 61, 43, 0.35); }
@@ -207,6 +207,43 @@
     .oscilo-legenda .mx { color: var(--mx); }
     .oscilo-legenda .fx { color: var(--fx); }
     .dilo .oscilo-legenda p { margin-top: 0.8em; }
+    .oscilo-zamek { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7em 1em; margin-top: 1.3em; font-size: 13px; font-weight: 400; letter-spacing: 0.04em; }
+    .oscilo-zamek label { flex-basis: 100%; }
+    .oscilo-zamek-radek { display: inline-flex; flex-wrap: wrap; gap: 0.6em; }
+    .oscilo-zamek input {
+      width: 15em;
+      max-width: 100%;
+      min-height: 40px;
+      padding: 0 1.1em;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #000000;
+      color: #8cc79c;
+      font: inherit;
+      letter-spacing: 0.12em;
+    }
+    .oscilo-zamek input:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+    .oscilo-zamek button {
+      min-height: 40px;
+      padding: 0 1.3em;
+      border: 1px solid var(--green);
+      border-radius: 999px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-shadow: inherit;
+      box-shadow: 0 0 10px var(--glow);
+      cursor: pointer;
+      transition: filter 0.25s ease;
+    }
+    .oscilo-zamek button:hover, .oscilo-zamek button:focus-visible { filter: brightness(1.5); }
+    .oscilo-zamek button:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+    .oscilo-zamek button:disabled { opacity: 0.5; cursor: default; }
+    .oscilo-zamek.spatne input { border-color: #a0523d; }
+    .oscilo-zprava:empty { display: none; }
+    .oscilo.odemceno .oscilo-zamek label, .oscilo.odemceno .oscilo-zamek-radek { display: none; }
     @media (max-width: 640px) { .oscilo-ted { flex-basis: 100%; margin-left: 0; text-align: left; } }
     /* Separate, lighter dot for the zvuk site, top left next to the name. */
     .zvuk-tecka {
@@ -258,8 +295,8 @@
     <article class="dilo">
       <h2>Girl is monster<span class="preklad">directed by Sofie Lebow</span></h2>
       <p class="meta">2024 · student film, FAMU International APP programme · 8 min · soundtrack only</p>
-      <figure class="oscilo" data-casti="girl-is-monster" data-delka="464.56" data-dialog="dialogue" data-hudba="music" data-sd="sound design" data-ticho="silence">
-        <audio preload="none" src="media/audio/girl-is-monster.m4a"></audio>
+      <figure class="oscilo" data-casti="girl-is-monster" data-zamek="media/audio/girl-is-monster.enc" data-delka="464.56" data-dialog="dialogue" data-hudba="music" data-foley="foley" data-ticho="silence">
+        <audio preload="none"></audio>
         <div class="oscilo-obraz"><canvas class="oscilo-platno" aria-hidden="true"></canvas></div>
         <div class="oscilo-ovladani">
           <button class="oscilo-hraj" type="button" aria-label="Play" data-hraj="Play" data-pauza="Pause"><svg class="play" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2l12 7-12 7z"/></svg><svg class="pauza" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 2h4v14H3zM11 2h4v14h-4z"/></svg></button>
@@ -270,13 +307,21 @@
           <canvas class="oscilo-casti" aria-hidden="true"></canvas>
           <input class="oscilo-posun" type="range" min="0" max="464.56" step="0.5" value="0" aria-label="Position in the soundtrack">
         </div>
+        <form class="oscilo-zamek" data-nacitam="loading the sound…" data-spatne="wrong password" data-odemceno="sound unlocked, press play" data-chyba="the sound could not be loaded, please try again">
+          <label for="heslo-girl-is-monster">The sound is password-protected. Without the password, the lines play silently.</label>
+          <span class="oscilo-zamek-radek">
+            <input id="heslo-girl-is-monster" type="password" autocomplete="off" placeholder="password">
+            <button type="submit">unlock</button>
+          </span>
+          <span class="oscilo-zprava" role="status" aria-live="polite"></span>
+        </form>
         <figcaption class="oscilo-legenda">
           <ul>
             <li class="dx">dialogue</li>
             <li class="mx">music</li>
-            <li class="fx">sound design</li>
+            <li class="fx">foley</li>
           </ul>
-          <p>Three lines, three layers of the soundtrack: dialogue is the lightest green, sound design the darkest. A line comes alive while its layer is playing; when the layers overlap, several lines move at once. The strip below shows where each layer plays in the whole film. Click it to jump there.</p>
+          <p>Three lines, three layers of the soundtrack: dialogue is the lightest green, foley the darkest. A line comes alive while its layer is playing; when the layers overlap, several lines move at once. The strip below shows where each layer plays in the whole film. Click it to jump there.</p>
         </figcaption>
       </figure>
       <p>I recorded the production sound on set and later did the sound design. I then worked on the sound mix together with the director and George Cremaschi. My first experience with sound post-production.</p>
