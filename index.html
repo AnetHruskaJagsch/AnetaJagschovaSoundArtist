@@ -3,40 +3,104 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aneta Jagschová — sound artist</title>
+  <title>Aneta Jagschová</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f5f3ee;
-      --fg: #111111;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg: #0e0e0e; --fg: #f2f0ea; }
+      --bg: #000000;
+      --green: #1f3d2b;
+      --glow: rgba(31, 61, 43, 0.7);
+      --pad: clamp(16px, 6vw, 96px);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
+    html, body { height: 100%; overflow-x: hidden; }
     body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: var(--pad);
       background: var(--bg);
-      color: var(--fg);
-      display: grid;
-      place-items: center;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--green);
+      font-family: "IBM Plex Mono", "JetBrains Mono", "Space Mono", ui-monospace, Menlo, monospace;
     }
-    a {
-      color: inherit;
-      text-decoration: none;
-      font-size: 1.25rem;
-      font-weight: 300;
-      letter-spacing: 0.02em;
-      transition: letter-spacing 0.6s ease;
+    /* Faint scanlines, like an old monitor. */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0 2px, rgba(0, 0, 0, 0.18) 2px 3px);
     }
-    a:hover, a:focus-visible { letter-spacing: 0.2em; }
-    a:focus-visible { outline: 1px solid currentColor; outline-offset: 0.3em; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--green); outline-offset: 6px; }
+
+    .jmeno {
+      font-size: clamp(2.6rem, 10vw, 8rem);
+      font-weight: 500;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-align: right;
+      text-shadow: 0 0 12px var(--glow);
+    }
+    .jmeno span { display: block; position: relative; }
+    /* Blinking terminal cursor hangs just past the right edge, so both lines stay flush right. */
+    .jmeno .kurzor {
+      position: absolute;
+      left: calc(100% + 0.08em);
+      bottom: 0.14em;
+      width: 0.45em;
+      height: 0.1em;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--glow);
+      animation: blik 1.1s steps(1) infinite;
+    }
+    .jmeno:hover .kurzor, .jmeno:focus-visible .kurzor { animation-duration: 0.35s; }
+    @keyframes blik { 50% { opacity: 0; } }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: clamp(14px, 3vw, 28px);
+    }
+    .tecka {
+      display: block;
+      width: clamp(26px, 4vw, 40px);
+      height: clamp(26px, 4vw, 40px);
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 14px var(--glow);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    a.tecka:hover, a.tecka:focus-visible {
+      transform: scale(1.18);
+      filter: brightness(1.5);
+    }
+    .jmeno { transition: filter 0.25s ease; }
+    .jmeno:hover, .jmeno:focus-visible { filter: brightness(1.3); }
     @media (prefers-reduced-motion: reduce) {
-      a { transition: none; }
+      .jmeno .kurzor { animation: none; }
+      .tecka { transition: none; }
     }
   </style>
 </head>
 <body>
-  <a href="https://anethruskajagsch.github.io/zvuk/">zvuk</a>
+  <a class="jmeno" href="https://anethruskajagsch.github.io/zvuk/">
+    <span>Aneta</span>
+    <span>Jagschová<i class="kurzor" aria-hidden="true"></i></span>
+  </a>
+
+  <nav aria-label="Části webu">
+    <ul>
+      <li><a class="tecka" href="https://anethruskajagsch.github.io/zvuk/" aria-label="zvuk" title="zvuk"></a></li>
+      <li><span class="tecka" aria-hidden="true"></span></li>
+      <li><span class="tecka" aria-hidden="true"></span></li>
+      <li><span class="tecka" aria-hidden="true"></span></li>
+      <li><span class="tecka" aria-hidden="true"></span></li>
+    </ul>
+  </nav>
 </body>
 </html>
