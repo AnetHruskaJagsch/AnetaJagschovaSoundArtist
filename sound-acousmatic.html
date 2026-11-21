@@ -196,6 +196,30 @@
     .zvuk-tecka:hover i, .zvuk-tecka:focus-visible i { transform: scale(1.12); filter: brightness(1.25); }
     @media (prefers-reduced-motion: reduce) { .zvuk-tecka i { transition: none; } }
 
+    /* Longer texts hidden behind a small "text +" toggle. */
+    .rozbal { margin-top: 1.4em; }
+    .rozbal summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7em;
+      min-height: 36px;
+      padding: 0 1.1em;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      list-style: none;
+      cursor: pointer;
+      transition: border-color 0.25s ease, filter 0.25s ease;
+    }
+    .rozbal summary::-webkit-details-marker { display: none; }
+    .rozbal summary:hover, .rozbal summary:focus-visible { border-color: var(--green); filter: brightness(1.4); }
+    .rozbal summary:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+    .rozbal .plus { display: inline-block; font-size: 1.25em; line-height: 1; transition: transform 0.25s ease; }
+    .rozbal[open] .plus { transform: rotate(45deg); }
+    .rozbal .zdroj { font-size: 13px; letter-spacing: 0.04em; }
+    @media (prefers-reduced-motion: reduce) { .rozbal summary, .rozbal .plus { transition: none; } }
+
   </style>
 </head>
 <body>
@@ -214,6 +238,19 @@
   </a>
 
   <main>
+    <article class="dilo">
+      <h2>Zabíjačka<span class="preklad">Pig Slaughter</span></h2>
+      <p class="meta">2026 · bark beetle woodcut + matrix · sound composition, field recording of a pig slaughter · 1 min 27 s</p>
+      <details class="rozbal">
+        <summary>text <span class="plus" aria-hidden="true">+</span></summary>
+        <p>In the Czech Republic, spruce originally grew mainly in the foothills and mountains. At lower altitudes it occurred only in scattered patches in ravines, gullies and damp places shaped by water. Only in the 18th century did people start planting it on a massive scale across the landscape, often in ecologically unsuitable places and at the expense of more diverse forest stands. Because it was so useful, it allowed intensive forestry, and it gradually became the dominant tree on roughly half of the stand area of commercial forests.</p>
+        <p>And so for more than a hundred years we have been going mushroom picking in artificially created monocultures that we sometimes mistakenly call forests. But they are a kind of skeleton of a forest, without innards, without a past and without memories. Those are, figuratively, stored in the dead wood that we haul out of the forests.</p>
+        <p>Along with the wood, the only islands of life disappear too, for organisms that cannot survive in the otherwise acidic sea of needles. Such a forest is silent. In the acidic environment the needles decompose more slowly, water just runs through them and the monoculture dries out. And it is drought that is the key problem for spruces in the lowlands.</p>
+        <p>Such simplified stands are also prone to bark beetle outbreaks, helped further by summers lengthened by climate change, during which the beetle manages more generations than ever before. Weakened by drought, the spruces can no longer fight the bark beetle and they succumb, almost obediently, row after row, just as they were planted. Yet the bark beetle is not an intruder but a natural part of forest ecosystems. Bark beetle outbreaks are an almost regular part of mountain forest cycles, producing dead wood that other forest organisms go on to use.</p>
+        <p>Under the pressure of climate change, the vulnerability of artificial monocultures is now fully apparent. They show us that the rules of the game have changed and that it is no longer enough to treat the symptoms of unsuitable forestry with chemical sprays and salvage logging. We need to return to near-natural mixed forests, where the bark beetle will have its place but not an endless field of action.</p>
+        <p class="zdroj">Text: Kristina Svobodová, PhD candidate at the Department of Botany and Zoology, Masaryk University (MUNI)</p>
+      </details>
+    </article>
     <article class="dilo">
       <h2>Vltavská už není tak cizí<span class="preklad">Vltavská Is No Longer So Strange</span></h2>
       <p class="meta">2022 · field recording composition · part of my bachelor's thesis</p>
