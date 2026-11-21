@@ -4,7 +4,7 @@
 // the page: the content itself is still in the HTML. Once unlocked, it stays open for the browser tab.
 (() => {
   const KEY = 'aj-pristup';
-  const HASH = '61d476f25a8e7cdedb86ab4a24df817cda9082e52dd663b280f59749599634e5'; // "hruska"
+  const HASH = '61d476f25a8e7cdedb86ab4a24df817cda9082e52dd663b280f59749599634e5'; // SHA-256 of the normalized password
   try { if (sessionStorage.getItem(KEY) === HASH) return; } catch (e) { /* storage blocked: ask every time */ }
 
   const root = document.documentElement;
@@ -47,7 +47,7 @@
   `;
   document.head.appendChild(style);
 
-  // Case and diacritics do not matter: "Hruška", "hruska" and "HRUŠKA" all work.
+  // Case and diacritics do not matter.
   const normalize = s => s.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   const sha256 = async s => Array.from(new Uint8Array(
     await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s))
