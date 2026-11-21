@@ -196,6 +196,30 @@
     .zvuk-tecka:hover i, .zvuk-tecka:focus-visible i { transform: scale(1.12); filter: brightness(1.25); }
     @media (prefers-reduced-motion: reduce) { .zvuk-tecka i { transition: none; } }
 
+    /* Longer texts hidden behind a small "text +" toggle. */
+    .rozbal { margin-top: 1.4em; }
+    .rozbal summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7em;
+      min-height: 36px;
+      padding: 0 1.1em;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      list-style: none;
+      cursor: pointer;
+      transition: border-color 0.25s ease, filter 0.25s ease;
+    }
+    .rozbal summary::-webkit-details-marker { display: none; }
+    .rozbal summary:hover, .rozbal summary:focus-visible { border-color: var(--green); filter: brightness(1.4); }
+    .rozbal summary:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+    .rozbal .plus { display: inline-block; font-size: 1.25em; line-height: 1; transition: transform 0.25s ease; }
+    .rozbal[open] .plus { transform: rotate(45deg); }
+    .rozbal .zdroj { font-size: 13px; letter-spacing: 0.04em; }
+    @media (prefers-reduced-motion: reduce) { .rozbal summary, .rozbal .plus { transition: none; } }
+
   </style>
 </head>
 <body>
@@ -214,6 +238,19 @@
   </a>
 
   <main>
+    <article class="dilo">
+      <h2>Zabíjačka</h2>
+      <p class="meta">2026 · kůrovcův dřevoryt + matrice · zvuková kompozice, field recording ze zabíjačky · 1 min 27 s</p>
+      <details class="rozbal">
+        <summary>text <span class="plus" aria-hidden="true">+</span></summary>
+        <p>Smrk na území České republiky původně patřil především do podhorských a horských oblastí. V nižších polohách se vyskytoval jen ostrůvkovitě v roklích, stržích a na vlhkých stanovištích ovlivněných vodou. Teprve v 18. století začal být masivně vysazován napříč krajinou, často na ekologicky nevhodných místech a na úkor pestřejších lesních porostů. Díky své využitelnosti umožňoval intenzivní hospodaření, a tak se postupně stal dominantní dřevinou přibližně na polovině porostní plochy hospodářských lesů.</p>
+        <p>A tak už přes sto let chodíme na houby do uměle vytvořených monokultur, kterým občas mylně říkáme les. Je to však jakási kostra lesa, bez vnitřností, bez minulosti a bez vzpomínek. Ty jsou totiž pomyslně uložené v mrtvém dřevě, které z lesů odvážíme.</p>
+        <p>Se dřevem mizí i jediné ostrovy života pro organismy, které v jinak kyselém moři jehlic nemohou přežít. V takovém lese je pak ticho. Rozklad jehličí se v kyselém prostředí zpomaluje, voda jím jen proteče a monokultura vysychá. Právě sucho pak představuje pro smrky v nížinách zásadní problém.</p>
+        <p>Takto zjednodušené porosty jsou zároveň náchylné k přemnožení kůrovce, kterému prospívá i klimatickými změnami prodloužené léto, během něhož stihne víc generací než kdy dřív. Suchem oslabené smrky už nemají jak bojovat s kůrovcem a podléhají, skoro až poslušně, po celých řadách, jak byly vysázeny. Kůrovec přitom není vetřelcem, ale přirozenou součástí lesních ekosystémů. Kůrovcové kalamity jsou téměř pravidelnou součástí horských lesních cyklů, které produkují mrtvé dřevo, dále využívané lesními organismy.</p>
+        <p>Zranitelnost uměle vytvořených monokultur se dnes pod nátlakem klimatických změn projevuje naplno. Ukazují nám, že pravidla hry se změnila a už nestačí chemickými postřiky a kalamitní těžbou řešit symptomatické problémy nevhodného hospodaření. Je potřeba vrátit se k přírodě blízkým smíšeným lesům, kde bude mít kůrovec své místo, ale nebude mít nekonečné pole působnosti.</p>
+        <p class="zdroj">Text: Kristina Svobodová, doktorandka na Ústavu botaniky a zoologie, MUNI</p>
+      </details>
+    </article>
     <article class="dilo">
       <h2>Vltavská už není tak cizí</h2>
       <p class="meta">2022 · field recording kompozice · součást bakalářské práce</p>
