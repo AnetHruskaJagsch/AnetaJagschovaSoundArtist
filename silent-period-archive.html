@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aneta Jagschová — Silent Period Archive</title>
+  <title>Aneta Jagschová — Silent Period</title>
   <link rel="alternate" hreflang="cs" href="cs/silent-period-archive.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
-    /* Black like the main page, with fine forest-green dots in the background. */
+    /* White paper with fine forest-green dots and forest-green text, like the CV. */
     :root {
-      --bg: #000000;
+      --bg: #ffffff;
       --green: #1f3d2b;
-      --glow: rgba(31, 61, 43, 0.7);
-      --dot: rgba(31, 61, 43, 0.55);
-      --line: rgba(31, 61, 43, 0.7);
+      --glow: rgba(31, 61, 43, 0);
+      --dot: rgba(31, 61, 43, 0.2);
+      --line: rgba(31, 61, 43, 0.35);
       --pad: clamp(16px, 6vw, 96px);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,12 +29,12 @@
       padding: var(--pad);
       padding-top: max(var(--pad), 64px);
       background-color: var(--bg);
-      background-image: radial-gradient(var(--dot) 1px, transparent 1.6px);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
       background-size: 14px 14px;
       color: var(--green);
       font-family: "IBM Plex Mono", "JetBrains Mono", "Space Mono", ui-monospace, Menlo, monospace;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 400;
       line-height: 1.7;
       text-shadow: 0 0 8px var(--glow);
     }
@@ -127,7 +127,7 @@
     .obraz img { width: auto; max-width: 100%; max-height: 80vh; }
     .obraz.maly { max-width: 360px; margin-top: 1.8em; }
     .popisek { font-size: 13px; font-weight: 400; letter-spacing: 0.04em; }
-    audio { display: block; width: 100%; max-width: 640px; color-scheme: dark; }
+    audio { display: block; width: 100%; max-width: 640px; color-scheme: light; }
     @media (max-width: 640px) { .galerie.dvojice { grid-template-columns: 1fr; } }
 
     /* Dots with page names */
@@ -182,7 +182,6 @@
       letter-spacing: 0.08em;
       color: #3f7a55;
       text-decoration: none;
-      text-shadow: 0 0 8px rgba(63, 122, 85, 0.6);
     }
     .zvuk-tecka i {
       display: block;
@@ -210,7 +209,7 @@
   <a class="jmeno" href="index.html">
     <span>Aneta</span>
     <span>Jagschová</span>
-    <small>silent period archive</small>
+    <small>silent period</small>
   </a>
 
   <main>
@@ -269,11 +268,11 @@
 
   <nav aria-label="Site sections">
     <ul>
-      <li><a class="tecka" href="sound-acousmatic.html"><i aria-hidden="true"></i><span>Sound/Acousmatic</span></a></li>
+      <li><a class="tecka" href="sound-acousmatic.html"><i aria-hidden="true"></i><span>Sound Art</span></a></li>
       <li><a class="tecka" href="cv.html"><i aria-hidden="true"></i><span>CV</span></a></li>
       <li><a class="tecka" href="before-sound.html"><i aria-hidden="true"></i><span>Before Sound</span></a></li>
-      <li><a class="tecka" href="silent-period-archive.html" aria-current="page"><i aria-hidden="true"></i><span>Silent Period Archive</span></a></li>
-      <li><a class="tecka" href="sound-design-for-others.html"><i aria-hidden="true"></i><span>Sound Design for Others</span></a></li>
+      <li><a class="tecka" href="silent-period-archive.html" aria-current="page"><i aria-hidden="true"></i><span>Silent Period</span></a></li>
+      <li><a class="tecka" href="sound-design-for-others.html"><i aria-hidden="true"></i><span>Sound Design</span></a></li>
     </ul>
   </nav>
 
